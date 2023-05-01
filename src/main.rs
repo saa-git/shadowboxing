@@ -10,13 +10,8 @@ use std::{
 use device_query::{DeviceQuery, DeviceState, Keycode};
 use rand::{thread_rng, Rng};
 
-#[derive(Debug)]
-struct Lives(u32);
-
-const STD_LIVES: Lives = Lives(2);
-
 fn main() {
-    let (mut player, mut enemy) = (STD_LIVES, STD_LIVES);
+    let (mut player, mut enemy) = (2, 2);
 
     clear();
 
@@ -88,15 +83,15 @@ fn listen_to_keyboard(player_turn: bool) -> String {
     }
 }
 
-fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
+fn arena(player: &mut u32, enemy: &mut u32) -> bool {
     let mut player_turn: bool = true;
     let mut rounds = 1;
 
-    while player.0 > 0 && enemy.0 > 0 {
+    while *player > 0 && *enemy > 0 {
         clear();
 
         println!("\n[Round {rounds}]\n");
-        println!("Your Lives: {}\n\nOpponent Lives: {}\n", player.0, enemy.0);
+        println!("Your Lives: {}\n\nOpponent Lives: {}\n", player, enemy);
 
         println!(
             "Press the direction you'll {} (Press an Arrow/WASD key.)...",
@@ -129,7 +124,7 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
 
         if player_dir == enemy_dir {
             let victim = if player_turn {
-                enemy.0 -= 1;
+                *enemy -= 1;
 
                 println!(" ▄▄▄▄    ▄▄▄       ███▄    █   ▄████  ▐██▌");
                 println!("▓█████▄ ▒████▄     ██ ▀█   █  ██▒ ▀█▒ ▐██▌");
@@ -144,7 +139,7 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
 
                 "OPPONENT"
             } else {
-                player.0 -= 1;
+                *player -= 1;
 
                 println!(" ▄▄▄▄    ▒█████   ▒█████   ███▄ ▄███▓ ▐██▌");
                 println!("▓█████▄ ▒██▒  ██▒▒██▒  ██▒▓██▒▀█▀ ██▒ ▐██▌");
@@ -176,14 +171,14 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
             println!("\n{} MISSED!", if player_turn { "YOU" } else { "OPPONENT" });
         }
 
-        thread::sleep(Duration::from_secs(2));
+        thread::sleep(Duration::from_secs_f64(2.3));
 
         rounds += 1;
 
         player_turn = !player_turn;
     }
 
-    if player.0 > 0 {
+    if *player > 0 {
         return true;
     }
 
