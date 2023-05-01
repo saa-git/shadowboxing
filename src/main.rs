@@ -2,7 +2,7 @@
 // Use of this source code is governed by The Unlicense
 // which can be found in the LICENSE file.
 use std::{
-    io::{stdin, stdout, Write},
+    io::{stdout, Write},
     thread,
     time::Duration,
 };
@@ -11,36 +11,51 @@ use device_query::{DeviceQuery, DeviceState, Keycode};
 use rand::{thread_rng, Rng};
 
 #[derive(Debug)]
-struct Lives {
-    current_lives: u32,
-    max_lives: u32
-}
+struct Lives(u32);
 
-impl Lives {
-    fn reset(&mut self) {
-        self.current_lives = self.max_lives;
-    }
-}
-
-const STANDARD_LIVES: Lives = Lives { current_lives: 1, max_lives: 1 };
+const STD_LIVES: Lives = Lives(2);
 
 fn main() {
-    let mut player: Lives = STANDARD_LIVES;
-    let mut enemy: Lives = STANDARD_LIVES;
+    let (mut player, mut enemy) = (STD_LIVES, STD_LIVES);
 
-    let mut done: bool = false;
+    clear();
 
-    while !done {
-        clear();
-        println!("Welcome To Shadowboxing");
-        thread::sleep(Duration::from_secs(2));
+    println!("  ██████  ██░ ██  ▄▄▄      ▓█████▄  ▒█████   █     █░ ▄▄▄▄    ▒█████  ▒██   ██▒");
+    println!("▒██    ▒ ▓██░ ██▒▒████▄    ▒██▀ ██▌▒██▒  ██▒▓█░ █ ░█░▓█████▄ ▒██▒  ██▒▒▒ █ █ ▒░");
+    println!("░ ▓██▄   ▒██▀▀██░▒██  ▀█▄  ░██   █▌▒██░  ██▒▒█░ █ ░█ ▒██▒ ▄██▒██░  ██▒░░  █   ░");
+    println!("  ▒   ██▒░▓█ ░██ ░██▄▄▄▄██ ░▓█▄   ▌▒██   ██░░█░ █ ░█ ▒██░█▀  ▒██   ██░ ░ █ █ ▒ ");
+    println!("▒██████▒▒░▓█▒░██▓ ▓█   ▓██▒░▒████▓ ░ ████▓▒░░░██▒██▓ ░▓█  ▀█▓░ ████▓▒░▒██▒ ▒██▒");
+    println!("▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒ ▒▒   ▓▒█░ ▒▒▓  ▒ ░ ▒░▒░▒░ ░ ▓░▒ ▒  ░▒▓███▀▒░ ▒░▒░▒░ ▒▒ ░ ░▓ ░");
+    println!("░ ░▒  ░ ░ ▒ ░▒░ ░  ▒   ▒▒ ░ ░ ▒  ▒   ░ ▒ ▒░   ▒ ░ ░  ▒░▒   ░   ░ ▒ ▒░ ░░   ░▒ ░");
+    println!("░  ░  ░   ░  ░░ ░  ░   ▒    ░ ░  ░ ░ ░ ░ ▒    ░   ░   ░    ░ ░ ░ ░ ▒   ░    ░  ");
+    println!("      ░   ░  ░  ░      ░  ░   ░        ░ ░      ░     ░          ░ ░   ░    ░  ");
+    println!("                            ░                              ░                   ");
+    thread::sleep(Duration::from_secs(2));
 
-        done = cont(arena(&mut player, &mut enemy));
+    let won = arena(&mut player, &mut enemy);
 
-        if !done {
-            player.reset();
-            enemy.reset();
-        }
+    clear();
+
+    if won {
+        println!(" █     █░ ██▓ ███▄    █  ███▄    █ ▓█████  ██▀███   ▐██▌ ");
+        println!("▓█░ █ ░█░▓██▒ ██ ▀█   █  ██ ▀█   █ ▓█   ▀ ▓██ ▒ ██▒ ▐██▌ ");
+        println!("▒█░ █ ░█ ▒██▒▓██  ▀█ ██▒▓██  ▀█ ██▒▒███   ▓██ ░▄█ ▒ ▐██▌ ");
+        println!("░█░ █ ░█ ░██░▓██▒  ▐▌██▒▓██▒  ▐▌██▒▒▓█  ▄ ▒██▀▀█▄   ▓██▒ ");
+        println!("░░██▒██▓ ░██░▒██░   ▓██░▒██░   ▓██░░▒████▒░██▓ ▒██▒ ▒▄▄  ");
+        println!("░ ▓░▒ ▒  ░▓  ░ ▒░   ▒ ▒ ░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░ ░▀▀▒ ");
+        println!("  ▒ ░ ░   ▒ ░░ ░░   ░ ▒░░ ░░   ░ ▒░ ░ ░  ░  ░▒ ░ ▒░ ░  ░ ");
+        println!("  ░   ░   ▒ ░   ░   ░ ░    ░   ░ ░    ░     ░░   ░     ░ ");
+        println!("    ░     ░           ░          ░    ░  ░   ░      ░    ");
+    } else {
+        println!(" ██▓     ▒█████    ██████ ▓█████  ██▀███   ▐██▌ ");
+        println!("▓██▒    ▒██▒  ██▒▒██    ▒ ▓█   ▀ ▓██ ▒ ██▒ ▐██▌ ");
+        println!("▒██░    ▒██░  ██▒░ ▓██▄   ▒███   ▓██ ░▄█ ▒ ▐██▌ ");
+        println!("▒██░    ▒██   ██░  ▒   ██▒▒▓█  ▄ ▒██▀▀█▄   ▓██▒ ");
+        println!("░██████▒░ ████▓▒░▒██████▒▒░▒████▒░██▓ ▒██▒ ▒▄▄  ");
+        println!("░ ▒░▓  ░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░░ ▒▓ ░▒▓░ ░▀▀▒ ");
+        println!("░ ░ ▒  ░  ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░  ░▒ ░ ▒░ ░  ░ ");
+        println!("  ░ ░   ░ ░ ░ ▒  ░  ░  ░     ░     ░░   ░     ░ ");
+        println!("    ░  ░    ░ ░        ░     ░  ░   ░      ░    ");
     }
 }
 
@@ -77,11 +92,11 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
     let mut player_turn: bool = true;
     let mut rounds = 1;
 
-    while player.current_lives > 0 && enemy.current_lives > 0 {
+    while player.0 > 0 && enemy.0 > 0 {
         clear();
 
         println!("\n[Round {rounds}]\n");
-        println!("Your Lives: {}\n\nOpponent Lives: {}\n", player.current_lives, enemy.current_lives);
+        println!("Your Lives: {}\n\nOpponent Lives: {}\n", player.0, enemy.0);
 
         println!(
             "Press the direction you'll {} (Press an Arrow/WASD key.)...",
@@ -93,8 +108,14 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
         );
 
         let poss_keys: [Keycode; 8] = [
-            Keycode::Up, Keycode::Left, Keycode::Down, Keycode::Right,
-            Keycode::W, Keycode::A, Keycode::S, Keycode::D,
+            Keycode::Up,
+            Keycode::Left,
+            Keycode::Down,
+            Keycode::Right,
+            Keycode::W,
+            Keycode::A,
+            Keycode::S,
+            Keycode::D,
         ];
 
         let player_dir: String = listen_to_keyboard(player_turn);
@@ -107,8 +128,8 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
         }
 
         if player_dir == enemy_dir {
-            let (x, y) = if player_turn {
-                enemy.current_lives -= 1;
+            let victim = if player_turn {
+                enemy.0 -= 1;
 
                 println!(" ▄▄▄▄    ▄▄▄       ███▄    █   ▄████  ▐██▌");
                 println!("▓█████▄ ▒████▄     ██ ▀█   █  ██▒ ▀█▒ ▐██▌");
@@ -121,9 +142,9 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
                 println!(" ░            ░  ░         ░       ░  ░   ");
                 println!("      ░                                   ");
 
-                ("YOUR", "YOUR")
+                "OPPONENT"
             } else {
-                player.current_lives -= 1;
+                player.0 -= 1;
 
                 println!(" ▄▄▄▄    ▒█████   ▒█████   ███▄ ▄███▓ ▐██▌");
                 println!("▓█████▄ ▒██▒  ██▒▒██▒  ██▒▓██▒▀█▀ ██▒ ▐██▌");
@@ -136,10 +157,10 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
                 println!(" ░          ░ ░      ░ ░         ░    ░   ");
                 println!("      ░                                   ");
 
-                ("THEY", "THEIR")
+                "YOU"
             };
 
-            println!("\n{x} LOST A LIFE!\n NOW IT'S {y} TURN");
+            println!("\n{victim} LOST A LIFE!");
         } else {
             println!(" █     █░ ██▓  █████▒ █████▒▓█████ ▓█████▄               ");
             println!("▓█░ █ ░█░▓██▒▓██   ▒▓██   ▒ ▓█   ▀ ▒██▀ ██▌              ");
@@ -155,49 +176,18 @@ fn arena(player: &mut Lives, enemy: &mut Lives) -> bool {
             println!("\n{} MISSED!", if player_turn { "YOU" } else { "OPPONENT" });
         }
 
-        thread::sleep(Duration::from_secs(1));
+        thread::sleep(Duration::from_secs(2));
 
         rounds += 1;
 
         player_turn = !player_turn;
     }
 
-    if player.current_lives > 0 {
+    if player.0 > 0 {
         return true;
     }
 
     false
-}
-
-fn read_input(query: &'static str, new_line: bool) -> String {
-    let mut binder: String = String::new();
-
-    print!("{query}{}", if new_line { "\n" } else { "" });
-    stdout().flush().expect("SysErr: Could Not Flush [STDOUT]");
-
-    stdin()
-        .read_line(&mut binder)
-        .expect("SysErr: Could Not Read [STDIN]");
-
-    binder
-}
-
-fn cont(won: bool) -> bool {
-    loop {
-        clear();
-
-        println!("You {}!", if won { "WON" } else { "LOST" });
-        let response: String =
-            read_input("Do you want to reset (yes/si or no)? ", false).trim().to_lowercase();
-
-        println!("You chose: {response}");
-
-        match response.as_str() {
-            "yes" | "y" | "si" | "s" => break false,
-            "no" | "n" => break true,
-            _ => continue,
-        }
-    }
 }
 
 fn clear() {
