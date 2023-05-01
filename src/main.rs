@@ -1,11 +1,7 @@
-// Copyright 2023 Sharif Abdullahi.
-// Use of this source code is governed by The Unlicense
-// which can be found in the LICENSE file.
-
 // The Standard Library contains tools that base Rust
 // has but you need to specifically say you're using.
 use std::{
-    // IO is Input/Output, it let's do things with
+    // io is Input and Output (I/O), it let's do things with
     // the terminal like reading input.
     io::{
         // Standard Output allows you to get 
