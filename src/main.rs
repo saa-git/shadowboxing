@@ -89,8 +89,8 @@ fn main() {
     }
 }
 
-// Gets key presses from your computer and does something if you press
-// arrow/WASD keys.
+/// Gets key presses from your computer and does something if you press
+/// arrow/WASD keys.
 fn listen_to_keyboard(player_turn: bool) -> Keycode {
     // Variable to ask about changes in the mouse and keyboard.
     let listener: DeviceState = DeviceState::new();
@@ -132,7 +132,7 @@ fn listen_to_keyboard(player_turn: bool) -> Keycode {
     }
 }
 
-// The actual game.
+/// The actual game.
 fn arena() -> bool {
     // The Player's (You) lives.
     let mut player = 2;
