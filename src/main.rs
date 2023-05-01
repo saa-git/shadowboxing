@@ -91,7 +91,7 @@ fn arena(player: &mut u32, enemy: &mut u32) -> bool {
         clear();
 
         println!("\n[Round {rounds}]\n");
-        println!("Your Lives: {}\n\nOpponent Lives: {}\n", player, enemy);
+        println!("Your Lives: {player}\n\nOpponent Lives: {enemy}\n");
 
         println!(
             "Press the direction you'll {} (Press an Arrow/WASD key.)...",
@@ -157,21 +157,19 @@ fn arena(player: &mut u32, enemy: &mut u32) -> bool {
 
             println!("\n{victim} LOST A LIFE!");
         } else {
-            println!(" █     █░ ██▓  █████▒ █████▒▓█████ ▓█████▄               ");
-            println!("▓█░ █ ░█░▓██▒▓██   ▒▓██   ▒ ▓█   ▀ ▒██▀ ██▌              ");
-            println!("▒█░ █ ░█ ▒██▒▒████ ░▒████ ░ ▒███   ░██   █▌              ");
-            println!("░█░ █ ░█ ░██░░▓█▒  ░░▓█▒  ░ ▒▓█  ▄ ░▓█▄   ▌              ");
-            println!("░░██▒██▓ ░██░░▒█░   ░▒█░    ░▒████▒░▒████▓  ██▓  ██▓  ██▓");
-            println!("░ ▓░▒ ▒  ░▓   ▒ ░    ▒ ░    ░░ ▒░ ░ ▒▒▓  ▒  ▒▓▒  ▒▓▒  ▒▓▒");
-            println!("  ▒ ░ ░   ▒ ░ ░      ░       ░ ░  ░ ░ ▒  ▒  ░▒   ░▒   ░▒ ");
-            println!("  ░   ░   ▒ ░ ░ ░    ░ ░       ░    ░ ░  ░  ░    ░    ░  ");
-            println!("    ░     ░                    ░  ░   ░      ░    ░    ░ ");
-            println!("                                    ░        ░    ░    ░ ");
-
-            println!("\n{} MISSED!", if player_turn { "YOU" } else { "OPPONENT" });
+            println!(" ███▄ ▄███▓ ██▓  ██████   ██████ ▓█████ ▓█████▄               ");
+            println!("▓██▒▀█▀ ██▒▓██▒▒██    ▒ ▒██    ▒ ▓█   ▀ ▒██▀ ██▌              ");
+            println!("▓██    ▓██░▒██▒░ ▓██▄   ░ ▓██▄   ▒███   ░██   █▌              ");
+            println!("▒██    ▒██ ░██░  ▒   ██▒  ▒   ██▒▒▓█  ▄ ░▓█▄   ▌              ");
+            println!("▒██▒   ░██▒░██░▒██████▒▒▒██████▒▒░▒████▒░▒████▓  ██▓  ██▓  ██▓");
+            println!("░ ▒░   ░  ░░▓  ▒ ▒▓▒ ▒ ░▒ ▒▓▒ ▒ ░░░ ▒░ ░ ▒▒▓  ▒  ▒▓▒  ▒▓▒  ▒▓▒");
+            println!("░  ░      ░ ▒ ░░ ░▒  ░ ░░ ░▒  ░ ░ ░ ░  ░ ░ ▒  ▒  ░▒   ░▒   ░▒ ");
+            println!("░      ░    ▒ ░░  ░  ░  ░  ░  ░     ░    ░ ░  ░  ░    ░    ░  ");
+            println!("       ░    ░        ░        ░     ░  ░   ░      ░    ░    ░ ");
+            println!("                                         ░        ░    ░    ░ ");
         }
 
-        thread::sleep(Duration::from_secs_f64(2.3));
+        thread::sleep(Duration::from_secs(1));
 
         rounds += 1;
 
