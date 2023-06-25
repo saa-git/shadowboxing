@@ -1,7 +1,11 @@
+// Copyright 2023 Sharif Abdullahi.
+// Use of this source code is governed by The Unlicense
+// which can be found in the LICENSE file.
+
 // The Standard Library contains tools that base Rust
 // has but you need to specifically say you're using.
 use std::{
-    // io is Input and Output (I/O), it let's do things with
+    // io is Input and Output (I/O), it let's you do things with
     // the terminal like reading input.
     io::{
         // Standard Output allows you to get 
@@ -33,6 +37,7 @@ use device_query::{
     Keycode
 };
 
+// The Rand Library 
 use rand::{
     // thread_rng lets you use your specific computer to get a
     // seed for random number generation.
@@ -56,7 +61,7 @@ fn main() {
     println!("░  ░  ░   ░  ░░ ░  ░   ▒    ░ ░  ░ ░ ░ ░ ▒    ░   ░   ░    ░ ░ ░ ░ ▒   ░    ░  ");
     println!("      ░   ░  ░  ░      ░  ░   ░        ░ ░      ░     ░          ░ ░   ░    ░  ");
     println!("                            ░                              ░                   ");
-    thread::sleep(Duration::from_secs(2));
+    thread::sleep(Duration::from_secs(5));
 
     // The arena function returns a boolean (true/false).
     let won: bool = arena();
@@ -230,7 +235,7 @@ fn arena() -> bool {
 
             // Print who list a life.
             println!("\n{victim} LOST A LIFE!");
-        } else {
+        } else if player_turn {
             // ASCII Art Reading "MISSED..."
             println!(" ███▄ ▄███▓ ██▓  ██████   ██████ ▓█████ ▓█████▄               ");
             println!("▓██▒▀█▀ ██▒▓██▒▒██    ▒ ▒██    ▒ ▓█   ▀ ▒██▀ ██▌              ");
@@ -242,6 +247,17 @@ fn arena() -> bool {
             println!("░      ░    ▒ ░░  ░  ░  ░  ░  ░     ░    ░ ░  ░  ░    ░    ░  ");
             println!("       ░    ░        ░        ░     ░  ░   ░      ░    ░    ░ ");
             println!("                                         ░        ░    ░    ░ ");
+        } else {
+            println!("▓█████▄  ▒█████  ▓█████▄   ▄████ ▓█████ ▓█████▄  ▐██▌  ▐██▌  ▐██▌");
+            println!("▒██▀ ██▌▒██▒  ██▒▒██▀ ██▌ ██▒ ▀█▒▓█   ▀ ▒██▀ ██▌ ▐██▌  ▐██▌  ▐██▌");
+            println!("░██   █▌▒██░  ██▒░██   █▌▒██░▄▄▄░▒███   ░██   █▌ ▐██▌  ▐██▌  ▐██▌");
+            println!("░▓█▄   ▌▒██   ██░░▓█▄   ▌░▓█  ██▓▒▓█  ▄ ░▓█▄   ▌ ▓██▒  ▓██▒  ▓██▒");
+            println!("░▒████▓ ░ ████▓▒░░▒████▓ ░▒▓███▀▒░▒████▒░▒████▓  ▒▄▄   ▒▄▄   ▒▄▄ ");
+            println!(" ▒▒▓  ▒ ░ ▒░▒░▒░  ▒▒▓  ▒  ░▒   ▒ ░░ ▒░ ░ ▒▒▓  ▒  ░▀▀▒  ░▀▀▒  ░▀▀▒");
+            println!(" ░ ▒  ▒   ░ ▒ ▒░  ░ ▒  ▒   ░   ░  ░ ░  ░ ░ ▒  ▒  ░  ░  ░  ░  ░  ░");
+            println!(" ░ ░  ░ ░ ░ ░ ▒   ░ ░  ░ ░ ░   ░    ░    ░ ░  ░     ░     ░     ░");
+            println!("   ░        ░ ░     ░          ░    ░  ░   ░     ░     ░     ░   ");
+            println!(" ░                ░                      ░                       ");
         }
 
         // Program pauses for a second.

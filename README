@@ -1,0 +1,29 @@
+// Copyright 2023 Sharif Abdullahi.
+// Use of this source code is governed by The Unlicense
+// which can be found in the LICENSE file.
+
+# Shadowbox
+This is an implementation of the game from TikTok "Shadowboxing".
+
+# How to Play Shadowboxing
+Shadowboxing has 2 roles, a pointer and a looker, which alternate per round.
+There are at least 2+ players.
+
+The pointer will point in a cardinal direction of their choice.
+The looker must look in a direction at the same time that the pointer points.
+
+If the looker looks in the same direction of the point, the pointer gets to go again.
+The pair are now in a pattern, both players repeat all of the previous moves the current looker messed up on, adding a new matchup to the end.
+They repeat until the looker breaks out of the pattern or repeats [lives] amount of times in a row.
+This moves the game to a new round either switching roles in 2-player, or moving along the ring.
+
+# How To Play Shadowbox
+When you open the application, you are shown that game's title for 2 secs.
+The game will automatically start.
+
+The next screen will show the current round and the amount of lives either player has.
+At the bottom, the game will also prompt you to press an arrow or WASD Key.
+
+When you press a (valid) button, it will compare the players choice with the bot's choice.
+
+The second screen loops until someone loses all of their lives.
